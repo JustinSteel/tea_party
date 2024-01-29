@@ -4,6 +4,6 @@ class Customer < ApplicationRecord
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   
 
-  has_many :subscriptions
-  has_many :teas, through: :subscriptions
+  has_many :customer_subscriptions
+  has_many :subscriptions, through: :customer_subscriptions
 end

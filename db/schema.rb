@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_23_174731) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_28_223432) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "customer_subscriptions", force: :cascade do |t|
+    t.bigint "customer_id", null: false
+    t.bigint "subscription_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "status", default: 0
+    t.index ["customer_id"], name: "index_customer_subscriptions_on_customer_id"
+    t.index ["subscription_id"], name: "index_customer_subscriptions_on_subscription_id"
+  end
 
   create_table "customers", force: :cascade do |t|
     t.string "first_name"
@@ -26,19 +36,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_23_174731) do
   create_table "subscriptions", force: :cascade do |t|
     t.string "title"
     t.integer "price"
-    t.integer "status"
-    t.string "frequency"
-    t.bigint "customer_id", null: false
+    t.integer "status", default: 0
+    t.integer "frequency"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["customer_id"], name: "index_subscriptions_on_customer_id"
-  end
-
-  create_table "subscriptions_teas", id: false, force: :cascade do |t|
-    t.bigint "subscription_id", null: false
-    t.bigint "tea_id", null: false
-    t.index ["subscription_id"], name: "index_subscriptions_teas_on_subscription_id"
-    t.index ["tea_id"], name: "index_subscriptions_teas_on_tea_id"
   end
 
   create_table "teas", force: :cascade do |t|
@@ -48,9 +49,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_23_174731) do
     t.integer "brew_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "subscription_id"
+    t.index ["subscription_id"], name: "index_teas_on_subscription_id"
   end
 
-  add_foreign_key "subscriptions", "customers"
-  add_foreign_key "subscriptions_teas", "subscriptions"
-  add_foreign_key "subscriptions_teas", "teas"
+  add_foreign_key "customer_subscriptions", "customers"
+  add_foreign_key "customer_subscriptions", "subscriptions"
+  add_foreign_key "teas", "subscriptions"
 end
