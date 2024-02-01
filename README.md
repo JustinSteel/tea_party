@@ -10,7 +10,7 @@ These instructions will give you a copy of the project up and running on your lo
 This project uses Ruby version 3.2.2.
 
 ### Database Setup
-
+<img src="image.png" alt="Alt text" width="400"/>
 To initialize the database, run the following commands:
 
 `rails db:{drop,create,migrate,seed}`
